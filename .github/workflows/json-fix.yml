@@ -33,15 +33,14 @@ jobs:
       - name: Read and process changed files
         run: |
           while IFS= read -r file; do
-            if [[ "$file" == *".json" ]];then
+            if [[ "$file" == *".json" ]] && [[ -f "$file" ]]; then
               jsonrepair "$file" --overwrite
               echo "Processed file: $file"
             fi
           done < changed_files.txt
           rm -rf changed_files.txt
           jsonrepair data/_list.json --overwrite
-          jsonrepair data/_packs.json --overwrite
-          jsonrepair data/_staff.json --overwrite
+          jsonrepair data/_editors.json --overwrite
         
 
         # save
