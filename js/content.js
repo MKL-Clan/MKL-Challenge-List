@@ -57,11 +57,31 @@ export async function fetchLeaderboard() {
             return;
         }
 
+        // Creators
+        level.creators.forEach((person) => {
+            const creator = Object.keys(scoreMap).find(
+                (u) => u.toLowerCase() === person.toLowerCase(),
+            ) || person;
+            scoreMap[creator] ??= {
+                created: [],
+                verified: [],
+                completed: [],
+                progressed: [],
+            };
+            const { created } = scoreMap[creator];
+            created.push({
+                rank: rank + 1,
+                level: level.name,
+                link: level.verification,
+            });
+        });
+
         // Verification
         const verifier = Object.keys(scoreMap).find(
             (u) => u.toLowerCase() === level.verifier.toLowerCase(),
         ) || level.verifier;
         scoreMap[verifier] ??= {
+            created: [],
             verified: [],
             completed: [],
             progressed: [],
@@ -80,6 +100,7 @@ export async function fetchLeaderboard() {
                 (u) => u.toLowerCase() === record.user.toLowerCase(),
             ) || record.user;
             scoreMap[user] ??= {
+                created: [],
                 verified: [],
                 completed: [],
                 progressed: [],
